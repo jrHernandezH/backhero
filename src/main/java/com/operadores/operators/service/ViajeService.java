@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +46,13 @@ public class ViajeService {
     public Viaje getActiveViaje() {
         LOG.info("Getting active Viaje");
 
-        return viajeRepository.findByEstado(EstadoEnum.ACTIVO)
-                .orElseThrow(() -> new RuntimeException("No active Viaje found"));
+        Optional<Viaje> optionalViaje = viajeRepository.findByEstado(EstadoEnum.ACTIVO);
+
+        if (optionalViaje.isPresent()) {
+            return optionalViaje.get();
+        } else {
+            return null;
+        }
     }
 
     //save img and return path

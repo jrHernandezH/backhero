@@ -2,6 +2,7 @@ package com.operadores.operators.controller;
 
 import com.operadores.operators.dto.create.ViajeCreate;
 import com.operadores.operators.dto.request.ImageRequest;
+import com.operadores.operators.model.Viaje;
 import com.operadores.operators.service.ViajeService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,11 +21,21 @@ public class ViajeController {
     private static final Logger LOG = LoggerFactory.getLogger(ViajeController.class);
     private final ViajeService service;
 
+    @GetMapping("/tesst")
+    public ResponseEntity<?> test(){
+       return ResponseEntity.status(HttpStatus.OK).body("Hello");
+    }
+
+
     @GetMapping
     public ResponseEntity<?> getViaje(){
         LOG.info("GET VIAJE");
 
-        return ResponseEntity.ok(service.getActiveViaje());
+        Viaje viaje = service.getActiveViaje();
+        if(viaje != null){
+            return ResponseEntity.status(HttpStatus.OK).body(viaje);
+        }
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     @PostMapping
